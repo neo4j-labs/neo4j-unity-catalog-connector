@@ -4,6 +4,8 @@ A single shaded (fat) JAR that bundles the Neo4j JDBC driver, the SQL-to-Cypher 
 
 Instead of downloading and uploading two separate JARs (`neo4j-jdbc-full-bundle` + `neo4j-jdbc-translator-sparkcleaner`), users upload this single JAR to a UC Volume and reference one path in their connection configuration.
 
+For examples of how to set up and use this connector with Databricks Unity Catalog, see [neo4j-uc-integration](https://github.com/neo4j-partners/neo4j-uc-integration).
+
 ## Prerequisites
 
 - Java 17+
