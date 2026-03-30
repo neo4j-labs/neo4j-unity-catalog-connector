@@ -1,5 +1,15 @@
-# Neo4j Unity Catalog Connector
+# Neo4j Connector for Unity Catalog
+Enables Databricks and Neo4j customers to maintain governance over their Neo4j graph data from Unity Catalog and federated queries across both data platforms.
 
+##Key Benefits
+- Unified analytical plane - one consistent interface for analysts across graph and relational data.
+- No more loading bulk data into the graph - keep fault data, weather data, and time-series in the lakehouse; query it alongside graph data seamlessly.
+- SQL-only access to graph data - Analysts query everything with standard SQL; Cypher translation happens automatically.
+- Federated joins across graph + lakehouse - Unity Catalog distributes queries to both sources and joins the results.
+- Materialized views as a graph cache - Schedule refreshes to avoid hitting the graph directly on every query.
+- Genie natural language queries - Materialized graph views plug into Databricks Genie for natural language access across all data.
+
+##What is it?
 A single shaded (fat) JAR that bundles the Neo4j JDBC driver, the SQL-to-Cypher translator, and the Spark subquery cleaner for use with Databricks Unity Catalog federated queries.
 
 Instead of downloading and uploading two separate JARs (`neo4j-jdbc-full-bundle` + `neo4j-jdbc-translator-sparkcleaner`), users upload this single JAR to a UC Volume and reference one path in their connection configuration.
