@@ -20,12 +20,12 @@
   </developers>
   <properties>
     <java.version>17</java.version>
-    <revision>0.0.0-SNAPSHOT</revision>
     <jreleaser-maven-plugin.version>1.23.0</jreleaser-maven-plugin.version>
     <junit-jupiter.version>6.0.3</junit-jupiter.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <neo4j-jdbc.version>6.12.0</neo4j-jdbc.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <revision>0.0.0-SNAPSHOT</revision>
     <spotless-maven-plugin.version>3.1.0</spotless-maven-plugin.version>
   </properties>
 
