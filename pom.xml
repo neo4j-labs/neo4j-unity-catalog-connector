@@ -4,7 +4,7 @@
 
   <groupId>org.neo4j</groupId>
   <artifactId>neo4j-unity-catalog-connector</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>${revision}</version>
   <inceptionYear>2025</inceptionYear>
   <organization>
     <name>Neo4j, Neo4j Sweden AB</name>
@@ -20,6 +20,7 @@
   </developers>
   <properties>
     <java.version>17</java.version>
+    <revision>0.0.0-SNAPSHOT</revision>
     <jreleaser-maven-plugin.version>1.23.0</jreleaser-maven-plugin.version>
     <junit-jupiter.version>6.0.3</junit-jupiter.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
