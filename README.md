@@ -19,7 +19,7 @@ For examples of how to set up and use this connector with Databricks Unity Catal
 The shaded JAR is produced at:
 
 ```
-target/neo4j-unity-catalog-connector-1.0.0-SNAPSHOT.jar
+target/neo4j-unity-catalog-connector-0.0.0-SNAPSHOT.jar
 ```
 
 ## Run Tests
@@ -32,11 +32,19 @@ Tests verify that the bundled translators are discoverable via SPI, the Spark su
 
 ## Release
 
-The `release` GitHub Actions workflow publishes a GitHub Release with the built JAR when you push a tag:
+The `release` GitHub Actions workflow publishes a GitHub Release with the built JAR when you push a tag. The version in the JAR filename is derived from the tag name automatically.
+
+Create an annotated tag with a release message and push it:
 
 ```bash
-git tag 1.0.0
-git push origin 1.0.0
+git tag -a 1.1.0 -m "Release 1.1.0: description of changes"
+git push origin 1.1.0
+```
+
+You can also build a specific version locally:
+
+```bash
+./mvnw clean verify -Drevision=1.1.0
 ```
 
 ## What's Inside

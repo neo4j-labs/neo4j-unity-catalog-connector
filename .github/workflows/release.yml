@@ -16,8 +16,11 @@ jobs:
           distribution: zulu
           java-version: 17
           cache: maven
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
       - name: Clean and verify
-        run: ./mvnw -q clean verify
+        run: ./mvnw -q clean verify -Drevision=${{ steps.version.outputs.VERSION }}
       - name: Remove original unshaded JAR
         run: rm -f target/original-*.jar
       - name: Release
