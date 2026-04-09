@@ -1,5 +1,6 @@
 dependency-reduced-pom.xml
 target/
+org/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
