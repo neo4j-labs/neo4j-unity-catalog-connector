@@ -1,29 +1,37 @@
 name: release
 
 on:
-  push:
+  workflow_dispatch:
+  create:
     tags:
       - '*'
 
 jobs:
-  build_artifact:
+  release:
+    if: (github.event_name == 'create' && github.event.ref_type == 'tag') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd   # v6.0.2
-      - name: Set up JDK
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+      - name: 'Set up JDK'
+        uses: actions/setup-java@v4
         with:
           distribution: zulu
           java-version: 17
-          cache: maven
-      - name: Extract version from tag
-        id: version
-        run: echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
-      - name: Clean and verify
-        run: ./mvnw -q clean verify -Drevision=${{ steps.version.outputs.VERSION }}
-      - name: Remove original unshaded JAR
-        run: rm -f target/original-*.jar
-      - name: Release
-        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+
+      - name: 'Prepare git'
+        run: git config --global core.autocrlf false
+
+      - name: 'Prepare branch name'
+        if: (github.event_name == 'create' && github.event.ref_type == 'tag')
+        run: >
+          echo "refName=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: 'Checkout relevant branch'
+        uses: actions/checkout@v4
         with:
-          files: target/neo4j-unity-catalog-connector-*.jar
+          ref: ${{ env.refName }}
+          fetch-depth: 0
+
+      - name: 'Create release'
+        env:
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_TOKEN }}
+        run: ./mvnw --no-transfer-progress clean package jreleaser:full-release

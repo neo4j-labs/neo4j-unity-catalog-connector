@@ -18,4 +18,4 @@ jobs:
           java-version: 17
           cache: maven
       - name: Clean and verify
-        run: ./mvnw -q clean verify -Drevision=0.0.0-SNAPSHOT
+        run: ./mvnw -q clean verify

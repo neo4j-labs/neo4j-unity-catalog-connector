@@ -4,12 +4,24 @@
 
   <groupId>org.neo4j</groupId>
   <artifactId>neo4j-unity-catalog-connector</artifactId>
-  <version>${revision}</version>
+  <version>1.3.3-SNAPSHOT</version>
+
+  <packaging>jar</packaging>
+  <name>Neo4j Connector for Unity Catalog</name>
+  <description>A bundled version of the Neo4j JDBC driver ready to be used in Databricks Unity Catalog.</description>
+  <url>https://github.com/neo4j-labs/neo4j-unity-catalog-connector</url>
   <inceptionYear>2025</inceptionYear>
   <organization>
     <name>Neo4j, Neo4j Sweden AB</name>
     <url>https://neo4j.com</url>
   </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
   <developers>
     <developer>
       <id>team-connectors</id>
@@ -18,14 +30,34 @@
       <organizationUrl>https://neo4j.com</organizationUrl>
     </developer>
   </developers>
+
+  <scm>
+    <connection>scm:git:git@github.com:neo4j-labs/neo4j-unity-catalog-connector.git</connection>
+    <developerConnection>scm:git:git@github.com:neo4j-labs/neo4j-unity-catalog-connector.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/neo4j-labs/neo4j-unity-catalog-connector</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/neo4j-labs/neo4j-unity-catalog-connector/issues</url>
+  </issueManagement>
+
   <properties>
     <java.version>17</java.version>
     <jreleaser-maven-plugin.version>1.23.0</jreleaser-maven-plugin.version>
+    <jreleaser-maven-plugin.version>1.23.0</jreleaser-maven-plugin.version>
     <junit-jupiter.version>6.0.3</junit-jupiter.version>
+    <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+    <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
+    <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
+    <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+    <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
+    <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
+    <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <neo4j-jdbc.version>6.12.1</neo4j-jdbc.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <revision>0.0.0-SNAPSHOT</revision>
     <spotless-maven-plugin.version>3.1.0</spotless-maven-plugin.version>
   </properties>
 
@@ -75,11 +107,62 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.jreleaser</groupId>
+          <artifactId>jreleaser-maven-plugin</artifactId>
+          <version>${jreleaser-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven-javadoc-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless-maven-plugin.version}</version>
+        <configuration>
+          <java>
+            <includes>
+              <include>src/main/java/**/*.java</include>
+              <include>src/test/java/**/*.java</include>
+            </includes>
+            <palantirJavaFormat />
+          </java>
+          <pom>
+            <includes>
+              <include>pom.xml</include>
+            </includes>
+            <sortPom>
+              <encoding>${project.build.sourceEncoding}</encoding>
+              <keepBlankLines>true</keepBlankLines>
+              <sortProperties>true</sortProperties>
+              <sortDependencies>scope,groupId,artifactId</sortDependencies>
+              <expandEmptyElements>false</expandEmptyElements>
+              <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+            </sortPom>
+          </pom>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.1</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <compilerArgs>-proc:none</compilerArgs>
         </configuration>
@@ -87,7 +170,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.6.1</version>
+        <version>${maven-shade-plugin.version}</version>
         <executions>
           <execution>
             <goals>
@@ -265,40 +348,296 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>com.diffplug.spotless</groupId>
-        <artifactId>spotless-maven-plugin</artifactId>
-        <version>${spotless-maven-plugin.version}</version>
-        <configuration>
-          <java>
-            <includes>
-              <include>src/main/java/**/*.java</include>
-              <include>src/test/java/**/*.java</include>
-            </includes>
-            <palantirJavaFormat />
-          </java>
-          <pom>
-            <includes>
-              <include>pom.xml</include>
-            </includes>
-            <sortPom>
-              <encoding>${project.build.sourceEncoding}</encoding>
-              <keepBlankLines>true</keepBlankLines>
-              <sortProperties>true</sortProperties>
-              <sortDependencies>scope,groupId,artifactId</sortDependencies>
-              <expandEmptyElements>false</expandEmptyElements>
-              <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
-            </sortPom>
-          </pom>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-source-plugin.version}</version>
         <executions>
           <execution>
+            <id>attach-sources</id>
             <goals>
-              <goal>check</goal>
+              <goal>jar-no-fork</goal>
             </goals>
-            <phase>compile</phase>
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${maven-release-plugin.version}</version>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <useReleaseProfile>false</useReleaseProfile>
+          <releaseProfiles>release</releaseProfiles>
+          <tagNameFormat>@{project.version}</tagNameFormat>
+          <goals>deploy</goals>
+          <!--suppress MavenModelInspection -->
+          <arguments>-Drelease -Dgpg.skip=${skipSigning} -DskipTests=${skipTestsDuringRelease} -DisDryRun=${dryRun} -Dspotless.skip</arguments>
+          <preparationGoals>clean verify</preparationGoals>
+          <completionGoals>compile</completionGoals>
+          <pushChanges>false</pushChanges>
+          <localCheckout>true</localCheckout>
+        </configuration>
+      </plugin>
+      <?SORTPOM IGNORE?>
+      <plugin>
+        <groupId>org.jreleaser</groupId>
+        <artifactId>jreleaser-maven-plugin</artifactId>
+        <configuration>
+          <jreleaser>
+            <project>
+              <name>${project.artifactId}</name>
+            </project>
+            <release>
+              <github>
+                <skipTag>true</skipTag>
+                <tagName>{{projectVersion}}</tagName>
+                <releaseName>{{projectVersion}}</releaseName>
+                <branch>main</branch>
+                <changelog>
+                  <formatted>ALWAYS</formatted>
+                  <contentTemplate>etc/jreleaser/changelog.md.tpl</contentTemplate>
+                  <format>- {{commitShortHash}} {{commitTitle}}</format>
+                  <preset>conventional-commits</preset>
+                  <contributors>
+                    <format>-
+                      {{^contributorUsername}}{{contributorName}}{{/contributorUsername}}{{#contributorUsername}}@{{contributorUsername}}{{/contributorUsername}}</format>
+                  </contributors>
+                  <labelers>
+                    <labeler>
+                      <title>Bump</title>
+                      <label>dependabot</label>
+                      <order>-1</order>
+                    </labeler>
+                    <labeler>
+                      <title>build(deps)</title>
+                      <label>dependabot</label>
+                      <order>-2</order>
+                    </labeler>
+                    <labeler>
+                      <title>Fix</title>
+                      <label>fix</label>
+                    </labeler>
+                    <labeler>
+                      <title>fix</title>
+                      <label>fix</label>
+                    </labeler>
+                    <labeler>
+                      <title>Add support</title>
+                      <label>feat</label>
+                    </labeler>
+                    <labeler>
+                      <title>Document</title>
+                      <label>docs</label>
+                    </labeler>
+                    <labeler>
+                      <title>After release cleanup.</title>
+                      <label>maven-release</label>
+                    </labeler>
+                    <labeler>
+                      <title>[maven-release-plugin]</title>
+                      <label>maven-release</label>
+                    </labeler>
+                    <labeler>
+                      <body>nocl</body>
+                      <label>nocl</label>
+                    </labeler>
+                  </labelers>
+                  <replacers>
+                    <replacer>
+                      <search>(?:build\(deps\): )(.*)</search>
+                      <replace>$1</replace>
+                    </replacer>
+                    <replacer>
+                      <search>((?:GH-)(\d+) - )(.*)</search>
+                      <replace>$3 (#$2)</replace>
+                    </replacer>
+                  </replacers>
+                  <categories>
+                    <category>
+                      <key>features</key>
+                      <title>🚀 Features</title>
+                      <labels>feat</labels>
+                      <order>10</order>
+                    </category>
+                    <category>
+                      <key>fixes</key>
+                      <title>🐛 Bug Fixes</title>
+                      <labels>fix</labels>
+                      <order>20</order>
+                    </category>
+                    <category>
+                      <key>changes</key>
+                      <title>🔄️ Refactorings</title>
+                      <labels>refactor</labels>
+                      <order>25</order>
+                    </category>
+                    <category>
+                      <key>docs</key>
+                      <title>📝 Documentation</title>
+                      <labels>docs</labels>
+                      <order>30</order>
+                    </category>
+                    <category>
+                      <key>tasks</key>
+                      <title>🧰 Tasks</title>
+                      <labels>chore</labels>
+                      <order>35</order>
+                    </category>
+                    <category>
+                      <title>🧹 Housekeeping</title>
+                      <labels>dependabot</labels>
+                      <order>70</order>
+                    </category>
+                    <category>
+                      <key>build</key>
+                      <title>🛠 Build</title>
+                      <order>80</order>
+                    </category>
+                    <category>
+                      <title>nocl</title>
+                      <labels>nocl,maven-release</labels>
+                    </category>
+                  </categories>
+                  <hide>
+                    <categories>dependabot,nocl</categories>
+                    <contributors>GitHub,dependabot</contributors>
+                  </hide>
+                </changelog>
+              </github>
+            </release>
+            <distributions>
+              <full-bundle>
+                <type>SINGLE_JAR</type>
+                <artifacts>
+                  <artifact>
+                    <path>${project.build.directory}/${project.artifactId}-${project.version}.jar</path>
+                  </artifact>
+                </artifacts>
+              </full-bundle>
+            </distributions>
+          </jreleaser>
+        </configuration>
+      </plugin>
+      <?SORTPOM RESUME?>
     </plugins>
   </build>
+
+  <profiles>
+
+    <profile>
+      <id>standard-javadoc</id>
+      <activation>
+        <file>
+          <missing>src/main/javadoc</missing>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <failOnError>false</failOnError>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <quiet>true</quiet>
+                  <detectOfflineLinks>false</detectOfflineLinks>
+                  <detectJavaApiLink>true</detectJavaApiLink>
+                  <release>${java.version}</release>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>custom-javadoc</id>
+      <activation>
+        <file>
+          <exists>src/main/javadoc</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>${maven-jar-plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <classifier>javadoc</classifier>
+                  <classesDirectory>${project.basedir}/src/main/javadoc</classesDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>deploy_to_central</id>
+      <activation>
+        <property>
+          <name>deploy_to_central</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jreleaser</groupId>
+            <artifactId>jreleaser-maven-plugin</artifactId>
+            <configuration combine.self="append">
+              <skip>false</skip>
+              <jreleaser>
+                <project>
+                  <!-- Setting this explicitly to the JReleaser env variables spares us from checking out the tag. -->
+                  <!--suppress MavenModelInspection -->
+                  <version>${env.JRELEASER_PROJECT_VERSION}</version>
+                </project>
+                <signing>
+                  <active>ALWAYS</active>
+                  <mode>COMMAND</mode>
+                  <command>
+                    <homeDir>~/.gnupg</homeDir>
+                  </command>
+                </signing>
+                <deploy>
+                  <maven>
+                    <mavenCentral>
+                      <neo4j_ucc>
+                        <active>ALWAYS</active>
+                        <url>https://central.sonatype.com/api/v1/publisher</url>
+                        <namespace>org.neo4j</namespace>
+                        <verifyPom>false</verifyPom>
+                        <applyMavenCentralRules>true</applyMavenCentralRules>
+                        <stagingRepositories>
+                          <stagingRepository>${project.build.directory}/artifacts</stagingRepository>
+                        </stagingRepositories>
+                        <maxRetries>1000</maxRetries>
+                      </neo4j_ucc>
+                    </mavenCentral>
+                  </maven>
+                </deploy>
+              </jreleaser>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
