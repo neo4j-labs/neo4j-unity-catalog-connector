@@ -40,23 +40,6 @@ Tests verify that the bundled translators are discoverable via SPI, the Spark su
 ./mvnw test
 ```
 
-## Release
-
-The `release` GitHub Actions workflow publishes a GitHub Release with the built JAR when you push a tag. The version in the JAR filename is derived from the tag name automatically.
-
-Create an annotated tag with a release message and push it:
-
-```bash
-git tag -a 1.1.0 -m "Release 1.1.0: description of changes"
-git push origin 1.1.0
-```
-
-You can also build a specific version locally:
-
-```bash
-./mvnw clean verify -Drevision=1.1.0
-```
-
 ## What's Inside
 
 The shaded JAR bundles:
