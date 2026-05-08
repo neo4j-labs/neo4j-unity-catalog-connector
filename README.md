@@ -32,6 +32,22 @@ The shaded JAR is produced at:
 target/neo4j-unity-catalog-connector-0.0.0-SNAPSHOT.jar
 ```
 
+## Sync Neo4j JDBC
+
+Use the `uv` script to sync `neo4j-jdbc.version` in `pom.xml` to the latest released `org.neo4j:neo4j-jdbc-bom` version from Maven Central and run the build:
+
+```bash
+uv run scripts/sync_neo4j_jdbc.py
+```
+
+To check what would be used without changing files:
+
+```bash
+uv run scripts/sync_neo4j_jdbc.py --dry-run
+```
+
+The script prompts before updating a locally modified `pom.xml`. After a successful build, it can also commit the `pom.xml` change with a message like `Sync Neo4j JDBC to 6.12.2` and push the commit.
+
 ## Run Tests
 
 Tests verify that the bundled translators are discoverable via SPI, the Spark subquery cleaner handles Databricks/Spark query patterns, and the JDBC driver class is loadable.
