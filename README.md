@@ -19,6 +19,25 @@ This single JAR gives users one artifact to upload to a UC Volume and one path t
 
 For examples of how to set up and use this connector with Databricks Unity Catalog, see [neo4j-uc-connector-demos](https://github.com/neo4j-partners/neo4j-uc-connector-demos/tree/main).
 
+## Databricks Compatibility
+
+This connector loads through a Unity Catalog connection of `TYPE JDBC`, the "bring your own driver" path. That path rolled out by compute type:
+
+| Compute | Requirement |
+|---|---|
+| Standard / dedicated clusters | Databricks Runtime 17.3 LTS or above |
+| Serverless | Supported |
+| SQL warehouses | Pro or serverless, Databricks SQL 2025.35 or above, plus the "Enable networking for isolated workloads in Serverless SQL Warehouses" preview |
+
+The feature as a whole reached Public Preview at Databricks Runtime 18.1 and Databricks SQL 2025.40. On earlier supported runtimes, enable the Custom JDBC on UC Compute and remote_query preview flags in the workspace.
+
+What the JDBC path gives you and what it does not:
+
+- Governance is connection-level only. Foreign catalogs are not supported with JDBC connections, so there is no browsable three-level namespace and no per-table grants.
+- Authentication is Static Credential (username and password in a Databricks secret) or OAuth Machine-to-Machine, which is in Beta. Unity Catalog credentials and service credentials are not supported.
+- Filters push down to Neo4j by default for both the Spark Data Source API and `remote_query`.
+- The bundled translator covers `WHERE`, `ORDER BY`, `LIMIT`/`OFFSET`, `DISTINCT`, `INNER`/`NATURAL JOIN`, `GROUP BY`, `HAVING`, and the aggregates `COUNT`, `COUNT DISTINCT`, `SUM`, `AVG`, `MIN`, `MAX`, `percentileCont`, `percentileDisc`, and standard deviation. Outer joins, window functions, set operations, and relationship-property aggregation are not supported; use the `/*+ NEO4J FORCE_CYPHER */` hint for those.
+
 ## Prerequisites
 
 - Java 17+
