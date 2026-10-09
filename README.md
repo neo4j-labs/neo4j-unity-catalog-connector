@@ -1,5 +1,7 @@
 # Neo4j Connector for Unity Catalog
 
+> This is an experimental Neo4j Labs project and not part of Neo4j's supported product lineup. See the [Neo4j Labs disclaimer](./LABS_DISCLAIMER.txt).
+
 Enables Databricks and Neo4j customers to maintain governance over their Neo4j graph data from Unity Catalog and federated queries across both data platforms.
 
 ## Key Benefits
